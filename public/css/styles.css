@@ -67,6 +67,7 @@ body, p {
 h1 {
 	color: #333;
 	font: 700 2.625rem/3.375rem "Open Sans", sans-serif;
+	background-image: linear-gradient(90deg, #ed6ea0 10%, #ec8c69 90%)
 }
 
 h2 {
@@ -227,6 +228,8 @@ a.red {
 	color: #fff;
 	text-decoration: none;
 }
+
+
 
 .form-group {
 	position: relative;
