@@ -50,7 +50,7 @@
 
 	var scene = new THREE.Scene();
 
-	var camera = new THREE.PerspectiveCamera(45, width / height, 0.01, 1000);
+	var camera = new THREE.PerspectiveCamera(85, width / height, 0.01, 1000);
 	camera.position.z = 1.5;
 
 	var renderer = new THREE.WebGLRenderer();
@@ -69,6 +69,7 @@
     var clouds = createClouds(radius, segments);
 	clouds.rotation.y = rotation;
 	scene.add(clouds)
+	
 
 	var stars = createStars(90, 64);
 	scene.add(stars);
@@ -77,14 +78,40 @@
 
 	worldgl.appendChild(renderer.domElement);
 
+	var moon = createMoon(0.05,10);
+	scene.add(moon);
+	// moon.position.x = -.7;
+	
+
+	var ring = createRing(0.61,0.8,100);
+	scene.add(ring);
+	ring.rotation.y = 0.3;
+	ring.rotation.x = -0.6;
+	//ring.rotation.z = 1000.3;
+	
+	//var now = new Date.now();
+
+
+
+
 	render();
 
 	function render() {
 		controls.update();
 		sphere.rotation.y += 0.0005;
-		clouds.rotation.y += 0.0005;		
+		clouds.rotation.y += 0.0005;
+		moon.rotation.x += 0.005;	
+		moon.rotation.y += 0.005;
+		now = Date.now()/5000;
+		moon.position.x = Math.cos(0.0005+now);
+		moon.position.y = Math.sin(0.0005+now);
+		//moon.position.z = 0.5*Math.cos(0.0005+now);
+		ring.rotation.z += 0.0002;
 		requestAnimationFrame(render);
 		renderer.render(scene, camera);
+		//camera.position.x = Math.cos(0.0000001+now);
+		//camera.position.z = Math.sin(0.0000001+now);
+		//camera.lookAt(scene.position);
 	}
 
 
@@ -118,6 +145,25 @@
 			new THREE.MeshBasicMaterial({
 				map:  THREE.ImageUtils.loadTexture('3D/galaxy_starfield.png'), 
 				side: THREE.BackSide
+			})
+		);
+	}
+
+	function createMoon(radius, segments) {
+		return new THREE.Mesh(
+			new THREE.SphereGeometry(radius, segments, segments), 
+			new THREE.MeshPhongMaterial({
+				color:0x00ff00,
+				wireframe:true
+			})
+		);
+	}
+	function createRing(inner, outer, segments) {
+		return new THREE.Mesh(
+			new THREE.RingGeometry(inner, outer, segments), 
+			new THREE.MeshPhongMaterial({
+				color:0x00ff00,
+				wireframe:true
 			})
 		);
 	}
